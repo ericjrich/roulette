@@ -32,12 +32,19 @@ local high_low; local high_count=0; local low_count=0
 local col123; local col1_count=0; local col2_count=0; local col3_count=0
 local doz123; local dozn1_count=0; local dozn2_count=0; local dozn3_count=0
 local z_count=0; local zz_count=0
-local unused_numbers="0 00 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36"
+
+local unused_numbersCol3="00 3 6 9 12 15 18 21 24 27 30 33 36"
+local unused_numbersCol2="   2 5 8 11 14 17 20 23 26 29 32 35"
+local unused_numbersCol1="0  1 4 7 10 13 16 19 22 25 28 21 34"
+
 
 #--COUNTS------------------------------------------------------------
 for outcome in "${outcomes[@]}"; do
   #un-used
-  unused_numbers=$(echo "$unused_numbers" | sed "s/\<$outcome\>//"); unused_numbers=$(echo "$unused_numbers" | tr -s ' ')
+  unused_numbersCol3=$(echo "$unused_numbersCol3" | sed "s/\<$outcome\>/$(printf '%*s' "${#outcome}")/")
+  unused_numbersCol2=$(echo "$unused_numbersCol2" | sed "s/\<$outcome\>/$(printf '%*s' "${#outcome}")/")
+  unused_numbersCol1=$(echo "$unused_numbersCol1" | sed "s/\<$outcome\>/$(printf '%*s' "${#outcome}")/")
+
   # 0 and 00
   if [[ $outcome == "0" ]]; then z_count=$((z_count+1)); continue
   elif [[ $outcome == "00" ]]; then zz_count=$((zz_count+1)); continue
@@ -107,7 +114,9 @@ clear
 ================ Past Numbers =============================
 ${outcomes[@]}
 ================ UnUsed Numbers ===========================
-${unused_numbers[@]}
+${unused_numbersCol3[@]}
+${unused_numbersCol2[@]}
+${unused_numbersCol1[@]}
 ================ Historic Data ============================
 Reds:   $red_count\t| Evens: $even_count\t| Lo:     $low_count\t| Col 3: $col3_count
 Blacks: $black_count\t| Odds:  $odd_count\t| Hi:     $high_count\t| Col 2: $col2_count
